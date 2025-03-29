@@ -18,6 +18,8 @@
     --foreground: #ededed;
   }
 }
+@plugin "daisyui";
+
 
 body {
   background: var(--background);
