@@ -2,7 +2,6 @@ import User from "@/app/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/app/lib/dbConfig";
 
-connectDb();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -13,6 +12,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+   await  connectDb();
     const user = await User.findOne({ email });
     if (user) {
       console.log("user already exists");

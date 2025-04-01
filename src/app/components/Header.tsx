@@ -3,10 +3,11 @@ import React from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { Home, User } from "lucide-react";
-import showNotification from "./Notifications";
+import { useNotification } from "./Notifications";
 
-function Header() {
+export default function Header() {
   const { data: session } = useSession();
+  const { showNotification } = useNotification();
 
   const handleSignOut = async () => {
     try {
@@ -23,13 +24,12 @@ function Header() {
               href="/"
               className="btn btn-ghost text-xl gap-2 normal-case font-bold"
               prefetch={true}
-              // #TO- DO
-            //   onClick={() =>
-            //     showNotification("Welcome to ImageKit ReelsPro", "info")
-            //   }
+              onClick={() =>
+                showNotification("Welcome to ImageKit ReelsPro", "info")
+              }
             >
               <Home className="w-5 h-5" />
-              ImageKit ReelsPro
+              REELS-MANIA
             </Link>
           </div>
           <div className="flex flex-1 justify-end px-2">
@@ -59,13 +59,12 @@ function Header() {
                         <Link
                           href="/upload"
                           className="px-4 py-2 hover:bg-base-200 block w-full"
-                          // #TO- DO
-                        //   onClick={() =>
-                        //     showNotification(
-                        //       "Welcome to Admin Dashboard",
-                        //       "info"
-                        //     )
-                        //   }
+                          onClick={() =>
+                            showNotification(
+                              "Welcome to Admin Dashboard",
+                              "info"
+                            )
+                          }
                         >
                           Video Upload
                         </Link>
@@ -85,11 +84,10 @@ function Header() {
                       <Link
                         href="/login"
                         className="px-4 py-2 hover:bg-base-200 block w-full"
-
                         // #TO- DO
-                        // onClick={() =>
-                        //   showNotification("Please sign in to continue", "info")
-                        // }
+                        onClick={() =>
+                          showNotification("Please sign in to continue", "info")
+                        }
                       >
                         Login
                       </Link>
@@ -104,5 +102,3 @@ function Header() {
     </>
   );
 }
-
-export default Header;

@@ -1,17 +1,17 @@
 import mongoose, { Schema, model, models } from "mongoose";
-import { title } from "process";
-import { StyleRegistry } from "styled-jsx";
+
 
 export const Video_Dimensions = {
   height: 1080,
   width: 1920,
 } as const;
 export interface Ivideo {
-  title: String;
-  description: String;
-  videoUrl: String;
-  thumbnailUrl: String;
-  controls: Boolean;
+  _id?: mongoose.Types.ObjectId;
+  title: string;
+  description: string;
+  videoUrl: string;
+  thumbnailUrl: string;
+  controls: boolean;
   videoAttributes: {
     height: Number;
     width: Number;
@@ -25,7 +25,7 @@ const videoSchema = new Schema<Ivideo>(
     title: { type: String, required: true },
     description: { type: String, required: true },
     videoUrl: { type: String, required: true },
-    thumbnailUrl: { type: String, required: true },
+    thumbnailUrl: { type: String, required:true },
     controls: { type: Boolean, default: true },
     videoAttributes: {
       height: { type: Number, default: Video_Dimensions.height },

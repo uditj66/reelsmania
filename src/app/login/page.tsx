@@ -1,32 +1,34 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useNotification from "../components/Notifications";
-import { ReactFormState } from "react-dom/client";
+import { useNotification } from "../components/Notifications";
 
 function LoginPage() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const router = useRouter();
-  const {showNotification}=useNotification();
+  const { showNotification } = useNotification();
 
-  const handleSubmit =async(e:React.FormEvent<HTMLFormElement>)=>{
-   e.preventDefault();
-   const result=await signIn("credentials",{
-    email,
-    password,
-    redirect:false
-   });
-   if(result?.error){
-    showNotification();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = await signIn("Credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    if (result?.error) {
+      // console.log("error in login");
 
-   }else{
-    showNotification();
-    router.push("/");
-   }
-  }
+      showNotification(result.error, "error");
+    } else {
+      showNotification("Login Successfull", "success");
+
+      router.push("/");
+    }
+  };
   return (
     <div className="max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">Login</h1>

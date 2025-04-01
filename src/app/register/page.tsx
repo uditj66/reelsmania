@@ -2,30 +2,39 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useNotification } from "../components/Notifications";
 
 function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
+  const { showNotification } = useNotification();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-       const response= await fetch("api/auth/register",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({email,password})
-        })
-       const data=response.json();
-       if(!response.ok){
-        //   # TO-DO
-        // showNotification()
 
-       }
-       router.push("/login");
+    if (password !== confirmPassword) {
+      showNotification("Passwords do not match", "error");
+      return;
+    }
+    try {
+      const response = await fetch("api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Registration failed");
+      }
+      showNotification("Registration Successfull", "success");
+      router.push("/login");
     } catch (error) {
-         // showNotification()
+      showNotification(
+        error instanceof Error ? error.message : "Registration Failed",
+        "error"
+      );
     }
   };
 

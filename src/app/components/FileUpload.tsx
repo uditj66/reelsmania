@@ -7,14 +7,14 @@ import { IKUploadResponse } from "imagekitio-next/dist/types/components/IKUpload
 
 interface FileUploadProps {
   onSuccess: (res: IKUploadResponse) => void;
-  onProgress: (progress: Number) => void;
+  onProgress: (progress: number) => void;
   fileType: "image" | "video";
 }
 
 export default function FileUpload({
   onSuccess,
   onProgress,
-  fileType = "image",
+  fileType,
 }: FileUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<String | null>(null);
@@ -32,6 +32,7 @@ export default function FileUpload({
 
   const handleSuccess = (response: IKUploadResponse) => {
     console.log("Success", response);
+
     setUploading(false);
     setError(null);
     onSuccess(response);
@@ -43,42 +44,43 @@ export default function FileUpload({
   };
 
   const validateFile = (file: File) => {
+    console.log(file);
     if (fileType === "video") {
       if (!file.type.startsWith("video/")) {
-        setError("please upload a video file");
+        setError("Please upload a valid video file");
         return false;
       }
-      if (file.size > 100 * 1024 * 1024) {
-        setError("video must be less than 100MB");
+      if (file.size>=70000000) {
+        setError("Video size must be less than 70MB");
         return false;
       }
     } else {
-      const validImagesTypes = ["image/webp", "image/jpeg", "image/png"];
-      if (!validImagesTypes.includes(file.type)) {
+      const validTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!validTypes.includes(file.type)) {
         setError("Please upload a valid image file (JPEG, PNG, or WebP)");
         return false;
       }
-      if (file.size > 5 * 1024 * 1024) {
-        setError("video must be less than 5MB");
+      if (file.size >= 10000000) {
+        setError("File size must be less than 10MB");
         return false;
       }
     }
-    return false;
+    return true;
   };
 
   return (
     <div className="space-y-2">
       <IKUpload
+        className="file-input file-input-bordered w-full"
         fileName={fileType === "video" ? "video" : "image"}
         useUniqueFileName={true}
         validateFile={validateFile}
-        className="file-input file-input-bordered w-full"
-        accept={fileType === "video" ? "video/*" : "image/*"}
         onError={onError}
         onSuccess={handleSuccess}
         onUploadProgress={handleProgress}
         onUploadStart={handleStartUpload}
-        folder={fileType === "video" ? "/video" : "/image"}
+        folder={fileType === "video" ? "/videos" : "/images"}
+        // accept=""
       />
 
       {uploading && (

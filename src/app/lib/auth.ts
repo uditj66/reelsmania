@@ -9,27 +9,36 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "email", type: "text" },
-        password: { label: "password", type: "password" },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email and password are missing");
+          throw new Error("Missing email or password");
         }
+
         try {
+          console.log("Connecting to database...");
           await connectDb();
+          console.log("Database connected.");
+
           const user = await User.findOne({ email: credentials.email });
 
           if (!user) {
-            throw new Error("No user found");
+            throw new Error("No user found with this email");
           }
-          const isPasswordMatched = await bcrypt.compare(
+
+          if (!user.password) {
+            throw new Error("User has no password stored.");
+          }
+
+          const isValid = await bcrypt.compare(
             credentials.password,
             user.password
           );
 
-          if (!isPasswordMatched) {
-            throw new Error("Password doesn't Matched");
+          if (!isValid) {
+            throw new Error("Invalid password");
           }
 
           return {
@@ -37,6 +46,7 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
           };
         } catch (error) {
+          console.error("Auth error:", error);
           throw error;
         }
       },
@@ -44,28 +54,28 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
+      console.log("JWT Callback: user:", user, "token:", token);
       if (user) {
         token.id = user.id;
+        token.email = user.email;
       }
       return token;
     },
-
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.is as string;
-      }
+      console.log("Session Callback: session:", session, "token:", token);
+      session.user = session.user || {};
+      session.user.id = token.id as string;
+      session.user.email = token.email as string;
       return session;
     },
   },
-  pages:{
- signIn:"/login",
- error:"/login"
+  pages: {
+    signIn: "/upload",
+    error: "/login",
   },
   session: {
     strategy: "jwt",
-    maxAge:30*24*60*60
+    maxAge: 30 * 24 * 60 * 60,
   },
-  secret: process.env.NEXTAUTH_SECRET
-
-  
+  secret: process.env.NEXTAUTH_SECRET,
 };
