@@ -16,7 +16,6 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Missing email or password");
         }
-
         try {
           console.log("Connecting to database...");
           await connectDb();
@@ -57,20 +56,22 @@ export const authOptions: NextAuthOptions = {
       console.log("JWT Callback: user:", user, "token:", token);
       if (user) {
         token.id = user.id;
-        token.email = user.email;
+        // token.email = user.email;
       }
       return token;
     },
     async session({ session, token }) {
       console.log("Session Callback: session:", session, "token:", token);
-      session.user = session.user || {};
-      session.user.id = token.id as string;
-      session.user.email = token.email as string;
+      if (session.user) {
+        session.user.id = token.id as string;
+        // session.user.email = token.email as string;
+      }
+
       return session;
     },
   },
   pages: {
-    signIn: "/upload",
+    signIn: "/upload" /* /login */,
     error: "/login",
   },
   session: {

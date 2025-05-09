@@ -11,7 +11,7 @@ console.log(publicKey);
 
 const authenticator = async () => {
   try {
-    const response = await fetch("/api/imagekit_auth");
+    const response = await fetch("/api/imagekit-auth");
 
     if (!response.ok) {
       const errorText = await response.text();
