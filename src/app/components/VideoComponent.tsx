@@ -2,6 +2,7 @@ import { IKVideo } from "imagekitio-next";
 import Link from "next/link";
 import { Ivideo } from "@/app/models/video.model";
 
+// Inline type declaration of props types in the function argument => less  reusable
 export default function VideoComponent({ video }: { video: Ivideo }) {
   return (
     <div className="card bg-base-100 shadow hover:shadow-lg transition-all duration-300">
@@ -12,13 +13,13 @@ export default function VideoComponent({ video }: { video: Ivideo }) {
             style={{ aspectRatio: "9/16" }}
           >
             <IKVideo
-              path={video.videoUrl}
-              transformation={[
-                {
-                  height: "1920",
-                  width: "1080",
-                },
-              ]}
+              path={video.thumbnailUrl}
+              // transformation={[
+              //   {
+              //     height: "2160",
+              //     width: "3840",
+              //   },
+              // ]}
               controls={video.controls}
               className="w-full h-full object-cover"
             />

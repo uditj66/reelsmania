@@ -9,30 +9,29 @@ const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY!;
 console.log(urlEndpoint);
 console.log(publicKey);
 
-const authenticator = async () => {
-  try {
-    const response = await fetch("/api/imagekit-auth");
+export default function Providers({ children }: { children: React.ReactNode }) {
+  const authenticator = async () => {
+    try {
+      const response = await fetch("/api/imagekit-auth");
 
-    if (!response.ok) {
-      const errorText = await response.text();
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Request failed with status ${response.status}: ${errorText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      const { signature, expire, token } = data;
+      return { signature, expire, token };
+    } catch (error: any) {
       throw new Error(
-        `Request failed with status ${response.status}: ${errorText}`
+        ` Imagekit Authentication request failed: ${error.message}`
       );
     }
-
-    const data = await response.json();
-    console.log(data);
-
-    const { signature, expire, token } = data;
-    return { signature, expire, token };
-  } catch (error: any) {
-    throw new Error(
-      ` Imagekit Authentication request failed: ${error.message}`
-    );
-  }
-};
-
-export default function Providers({ children }: { children: React.ReactNode }) {
+  };
   return (
     <SessionProvider>
       <NotificationProvider>
@@ -41,7 +40,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           publicKey={publicKey}
           authenticator={authenticator}
         >
-          {/* ...client side upload component goes here */}
           {children}
         </ImageKitProvider>
       </NotificationProvider>

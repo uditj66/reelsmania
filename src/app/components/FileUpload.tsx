@@ -17,12 +17,14 @@ export default function FileUpload({
   fileType,
 }: FileUploadProps) {
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<String | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleStartUpload = () => {
     setUploading(true);
     setError(null);
   };
+
+  // converts the onProgress call back result into %
   const handleProgress = (evt: ProgressEvent) => {
     if (evt.lengthComputable && onProgress) {
       const percentComplete = (evt.loaded / evt.total) * 100;
@@ -32,8 +34,9 @@ export default function FileUpload({
 
   const handleSuccess = (response: IKUploadResponse) => {
     console.log("Success", response);
-
-    setUploading(false);
+    setUploading(
+      false
+    ); /*  setUploading to false bcz we have uploded the content successfully*/
     setError(null);
     onSuccess(response);
   };
@@ -50,8 +53,8 @@ export default function FileUpload({
         setError("Please upload a valid video file");
         return false;
       }
-      if (file.size>=70000000) {
-        setError("Video size must be less than 70MB");
+      if (file.size > 70000000) {
+        setError("Video size must be less than or equal  to 70MB");
         return false;
       }
     } else {
@@ -60,8 +63,8 @@ export default function FileUpload({
         setError("Please upload a valid image file (JPEG, PNG, or WebP)");
         return false;
       }
-      if (file.size >= 10000000) {
-        setError("File size must be less than 10MB");
+      if (file.size > 10000000) {
+        setError("File size must be less than or equal to 10MB");
         return false;
       }
     }

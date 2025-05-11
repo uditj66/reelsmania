@@ -2,34 +2,45 @@
 import React from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { Home, User } from "lucide-react";
+import { User } from "lucide-react";
 import { useNotification } from "./Notifications";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { data: session } = useSession();
   const { showNotification } = useNotification();
+  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
-      await signOut();
-    } catch (error) {}
+      await signOut({redirect:false});
+      router.push("/");
+    } catch (error: any) {
+      throw new Error("ERROR OCCURED DUE TO :", error);
+    }
   };
 
   return (
     <>
       <div className="navbar bg-base-300 sticky top-0 z-40">
         <div className="container mx-auto">
-          <div className="flex-1 px-2 lg:flex-none">
+          <div className="flex flex-row px-2 lg:flex-none">
             <Link
               href="/"
-              className="btn btn-ghost text-xl gap-2 normal-case font-bold"
+              className=""
               prefetch={true}
               onClick={() =>
                 showNotification("Welcome to ImageKit ReelsPro", "info")
               }
             >
-              <Home className="w-5 h-5" />
-              REELS-MANIA
+              <Image
+                src={"/logo.png"}
+                alt="logo"
+                width={150}
+                height={100}
+                className="rounded-full"
+              />
             </Link>
           </div>
           <div className="flex flex-1 justify-end px-2">
@@ -50,7 +61,7 @@ export default function Header() {
                     <>
                       <li className="px-4 py-1">
                         <span className="text-sm opacity-70">
-                          {session.user?.email?.split("@")[0]}
+                          Welcome, {session.user?.email?.split("@")[0]}
                         </span>
                       </li>
                       <div className="divider my-1"></div>

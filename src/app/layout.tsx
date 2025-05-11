@@ -9,8 +9,9 @@ import VideoComponent from "./components/VideoComponent";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ImageKit Next.js Integration",
+  title: "REELSMANIA",
   description: "Demo of ImageKit integration with Next.js",
+  
 };
 
 export default function RootLayout({

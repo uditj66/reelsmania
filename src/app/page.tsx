@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import { Ivideo } from "./models/video.model";
@@ -12,12 +12,16 @@ export default function Home() {
     const fetchVideos = async () => {
       try {
         const data = await apiClient.getVideos();
+        console.log(data);
+        
+        
+
         setVideos(data);
       } catch (error) {
         console.error("Error while fetching videos", error);
       }
-      fetchVideos();
     };
+    fetchVideos();
   }, []);
   return (
     <>

@@ -14,7 +14,7 @@ interface VideoFormData {
   videoUrl: string;
   thumbnailUrl: string;
   controls: boolean;
-  videoAttributes: {
+  transformation: {
     height: Number;
     width: Number;
     quality?: Number;
@@ -87,8 +87,8 @@ export default function VideoUploadForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="form-control">
-        <label className="label">
-          Title
+        <label htmlFor="title" className="label">
+          Title:
           <input
             type="text"
             className={`input input-bordered ${
@@ -106,7 +106,7 @@ export default function VideoUploadForm() {
 
       <div className="form-control">
         <label className="label">
-          Description
+          Description:
           <textarea
             className={`textarea textarea-bordered h-24 ${
               errors.description ? "textarea-error" : ""
@@ -125,7 +125,7 @@ export default function VideoUploadForm() {
 
       <div className="form-control">
         <label className="label">
-          Upload Video
+          Upload Video:
           <FileUpload
             fileType="video"
             onSuccess={handleUploadSuccess}
