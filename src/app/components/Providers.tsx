@@ -26,10 +26,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
       const { signature, expire, token } = data;
       return { signature, expire, token };
-    } catch (error: any) {
-      throw new Error(
-        ` Imagekit Authentication request failed: ${error.message}`
-      );
+    } catch (error) {
+      throw new Error(` Imagekit Authentication request failed: ${error}}`);
     }
   };
   return (

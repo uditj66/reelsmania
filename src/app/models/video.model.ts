@@ -12,9 +12,9 @@ export interface Ivideo {
   thumbnailUrl: string;
   controls: boolean;
   transformation: {
-    height: Number;
-    width: Number;
-    quality?: Number;
+    height: number;
+    width: number;
+    quality?: number;
   };
   createdAt: Date;
   updatedAt: Date;

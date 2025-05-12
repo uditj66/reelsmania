@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-   await  connectDb();
+    await connectDb();
     const user = await User.findOne({ email });
     if (user) {
       console.log("user already exists");
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newUser = await User.create({
+    await User.create({
       email: email,
       password: password,
     });
@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
       {
-        errorDescription: error.message,
+        errorDescription: error,
       },
       { status: 500 }
     );

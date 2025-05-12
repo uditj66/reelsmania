@@ -3,9 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./components/Providers";
 import Header from "./components/Header";
-import FileUpload from "./components/FileUpload";
-import VideoFeed from "./components/VideoFeed";
-import VideoComponent from "./components/VideoComponent";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

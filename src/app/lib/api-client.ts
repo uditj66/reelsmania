@@ -28,7 +28,7 @@ type FetchOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE";
   // Record is a key-value pair
   headers?: Record<string, string>;
-  body?: any;
+  body?: VideoFormData;
 };
 
 class ApiClient {
@@ -71,6 +71,6 @@ class ApiClient {
     });
   }
 }
- 
+
 // exporting an object called apiClient from the class ApiClient
 export const apiClient = new ApiClient();

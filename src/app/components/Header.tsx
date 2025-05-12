@@ -6,6 +6,7 @@ import { User } from "lucide-react";
 import { useNotification } from "./Notifications";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -14,10 +15,16 @@ export default function Header() {
 
   const handleSignOut = async () => {
     try {
-      await signOut({redirect:false});
+      await signOut({ redirect: false });
       router.push("/");
-    } catch (error: any) {
-      throw new Error("ERROR OCCURED DUE TO :", error);
+    } catch (error) {
+      return NextResponse.json(
+        {
+          errorMessage: error,
+        },
+        { status: 500 }
+      );
+      // throw new Error("ERROR OCCURED DUE TO :");
     }
   };
 

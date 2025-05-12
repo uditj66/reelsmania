@@ -15,9 +15,9 @@ interface VideoFormData {
   thumbnailUrl: string;
   controls: boolean;
   transformation: {
-    height: Number;
-    width: Number;
-    quality?: Number;
+    height: number;
+    width:number;
+    quality?: number;
   };
   createdAt: Date;
   updatedAt: Date;
@@ -26,7 +26,7 @@ interface VideoFormData {
 export default function VideoUploadForm() {
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [fileType, setFileType] = useState("");
+  // const [fileType, setFileType] = useState("");
   const { showNotification } = useNotification();
 
   const {

@@ -12,7 +12,7 @@ export async function GET() {
       return NextResponse.json(imagekit.getAuthenticationParameters());
   } catch (error) {
     return NextResponse.json(
-      { errorDescription: "Imagekit auth failed " },
+      { errorDescription: "Imagekit auth failed ",error },
       { status: 500 }
     );
   }

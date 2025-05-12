@@ -2,7 +2,7 @@ import { signIn } from "next-auth/react";
 import React from "react";
 export function GithubButton() {
   const handleClick = () => {
-    const response = signIn("github", {
+    signIn("github", {
       redirect: true,
       callbackUrl: "/upload",
     });
@@ -33,7 +33,7 @@ export function GithubButton() {
 
 export function GoogleButton() {
   const handleClick = () => {
-    const response = signIn("google", {
+     signIn("google", {
       redirect: true,
       callbackUrl: "/upload",
     });
